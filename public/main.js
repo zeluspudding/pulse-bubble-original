@@ -287,13 +287,13 @@ $(function() {
     log(data.username + ' left');
     addParticipantsMessage(data);
     removeChatTyping(data);
+    console.log(data.usernames)
   });
 
   // Whenever the server emits 'tab switch', log it in the console
   socket.on('tab switch', (data) => {
     console.log(data.username);
     console.log(data.focused);
-    console.log(socket.clients((err , clients)))
   });
 
   // Whenever the server emits 'typing', show the typing message
