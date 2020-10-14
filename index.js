@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
   // when the client emits 'tab switch', this listens and executes
   socket.on('tab switch', (data) => {
     socket.focused = data;
-    socket.broadcast.emit('typing', {
+    socket.broadcast.emit('tab switch', {
       username: socket.username,
       focused: socket.focused
     });
