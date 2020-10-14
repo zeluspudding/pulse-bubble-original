@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('user left', {
         username: socket.username,
         numUsers: numUsers,
-        usernames: io.sockets.clients.map(s => s.username)
+        usernames: Object.keys(io.sockets).map(s => s.username)
       });
     }
   });
