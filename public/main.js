@@ -36,19 +36,17 @@ $(function() {
   }
 
   // Sets the client's username
-  const setUsername = () => {
-    username = '1601935699058x941037549196777300'
+  username = '1601935699058x941037549196777300'
 
-    // If the username is valid
-    if (username) {
-      $loginPage.fadeOut();
-      $chatPage.show();
-      $loginPage.off('click');
-      $currentInput = $inputMessage.focus();
+  // If the username is valid
+  if (username) {
+    $loginPage.fadeOut();
+    $chatPage.show();
+    $loginPage.off('click');
+    $currentInput = $inputMessage.focus();
 
-      // Tell the server your username
-      socket.emit('add user', username);
-    }
+    // Tell the server your username
+    socket.emit('add user', username);
   }
 
   // Sends a chat message
