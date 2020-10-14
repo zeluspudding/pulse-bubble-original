@@ -49,6 +49,27 @@ $(function() {
     socket.emit('add user', username);
   }
 
+  // Indicate whether user's tab is focused
+  $(window).on("blur focus", function(e) {
+      var prevType = $(this).data("prevType");
+
+      if (prevType != e.type) {   //  reduce double fire issues
+          switch (e.type) {
+              case "blur":
+                  // Tell the server you are not focused on this tab
+                  socket.emit('tab switch', false);
+                  break;
+              case "focus":
+                  // Tell the server you are focused on this tab
+                  socket.emit('tab switch', true);
+                  break;
+          }
+      }
+
+      $(this).data("prevType", e.type);
+  })
+
+
   // Sends a chat message
   const sendMessage = () => {
     var message = $inputMessage.val();
@@ -250,6 +271,12 @@ $(function() {
     log(data.username + ' left');
     addParticipantsMessage(data);
     removeChatTyping(data);
+  });
+
+  // Whenever the server emits 'tab switch', log it in the console
+  socket.on('tab switch', (data) => {
+    console.log(data.username);
+    console.log(data.focused);
   });
 
   // Whenever the server emits 'typing', show the typing message

@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
 
     // we store the username in the socket session for this client
     socket.username = username;
+    socket.focused = true;
     ++numUsers;
     addedUser = true;
     socket.emit('login', {
@@ -44,6 +45,15 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('user joined', {
       username: socket.username,
       numUsers: numUsers
+    });
+  });
+
+  // when the client emits 'tab switch', this listens and executes
+  socket.on('tab switch', (data) => {
+    socket.focused = data;
+    socket.broadcast.emit('typing', {
+      username: socket.username,
+      focused: socket.focused
     });
   });
 
