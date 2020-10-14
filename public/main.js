@@ -37,7 +37,7 @@ $(function() {
 
   // Sets the client's username
   const setUsername = () => {
-    username = cleanInput($usernameInput.val().trim());
+    username = '1601935699058x941037549196777300'
 
     // If the username is valid
     if (username) {
