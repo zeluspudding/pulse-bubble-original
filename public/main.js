@@ -35,18 +35,34 @@ $(function() {
     log(message);
   }
 
+  // // Sets the client's username
+  // username = '1601935699058x941037549196777300'
+  //
+  // // If the username is valid
+  // if (username) {
+  //   $loginPage.fadeOut();
+  //   $chatPage.show();
+  //   $loginPage.off('click');
+  //   $currentInput = $inputMessage.focus();
+  //
+  //   // Tell the server your username
+  //   socket.emit('add user', username);
+  // }
+
   // Sets the client's username
-  username = '1601935699058x941037549196777300'
+  const setUsername = () => {
+    username = cleanInput($usernameInput.val().trim());
 
-  // If the username is valid
-  if (username) {
-    $loginPage.fadeOut();
-    $chatPage.show();
-    $loginPage.off('click');
-    $currentInput = $inputMessage.focus();
+    // If the username is valid
+    if (username) {
+      $loginPage.fadeOut();
+      $chatPage.show();
+      $loginPage.off('click');
+      $currentInput = $inputMessage.focus();
 
-    // Tell the server your username
-    socket.emit('add user', username);
+      // Tell the server your username
+      socket.emit('add user', username);
+    }
   }
 
   // Indicate whether user's tab is focused
