@@ -293,6 +293,7 @@ $(function() {
   socket.on('tab switch', (data) => {
     console.log(data.username);
     console.log(data.focused);
+    console.log(socket.clients((err , clients)))
   });
 
   // Whenever the server emits 'typing', show the typing message
