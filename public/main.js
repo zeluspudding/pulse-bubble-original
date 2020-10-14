@@ -287,7 +287,8 @@ $(function() {
     log(data.username + ' left');
     addParticipantsMessage(data);
     removeChatTyping(data);
-    console.log(data.users)
+    console.log(data.usernames)
+    console.log(data.focused)
   });
 
   // Whenever the server emits 'tab switch', log it in the console
