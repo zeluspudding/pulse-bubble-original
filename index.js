@@ -16,6 +16,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Chatroom
 var numUsers = 0;
 
+function getRoomClients(room) {
+  return new Promise((resolve, reject) => {
+    io.of('/').in(room).clients((error, clients) => {
+      resolve(clients);
+    });
+  });
+}
+
 io.on('connection', (socket) => {
   var addedUser = false;
 
@@ -34,7 +42,7 @@ io.on('connection', (socket) => {
     socket.broadcast.to(socket.room).emit('user joined', {
       username: socket.username,
       numUsers: numUsers,
-      usernames: Object.keys(io.sockets.adapter.rooms[socket.room].sockets).map(client_id => io.sockets.connected[client_id].username),
+      usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
       focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
     });
   });
@@ -45,7 +53,7 @@ io.on('connection', (socket) => {
     socket.broadcast.to(socket.room).emit('tab switch', {
       username: socket.username,
       numUsers: numUsers,
-      usernames: Object.keys(io.sockets.adapter.rooms[socket.room].sockets).map(client_id => io.sockets.connected[client_id].username),
+      usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
       focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
     });
   });
@@ -59,7 +67,7 @@ io.on('connection', (socket) => {
       socket.broadcast.to(socket.room).emit('user left', {
         username: socket.username,
         numUsers: numUsers,
-        usernames: Object.keys(io.sockets.adapter.rooms[socket.room].sockets).map(client_id => io.sockets.connected[client_id].username),
+        usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
         focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
       });
     }
