@@ -44,7 +44,9 @@ io.on('connection', (socket) => {
     // echo globally (all clients) that a person has connected
     socket.broadcast.emit('user joined', {
       username: socket.username,
-      numUsers: numUsers
+      numUsers: numUsers,
+      usernames: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].username),
+      focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
     });
   });
 
@@ -53,7 +55,9 @@ io.on('connection', (socket) => {
     socket.focused = data;
     socket.broadcast.emit('tab switch', {
       username: socket.username,
-      focused: socket.focused,
+      numUsers: numUsers,
+      usernames: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].username),
+      focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
     });
   });
 
@@ -64,12 +68,12 @@ io.on('connection', (socket) => {
     });
   });
 
-  // when the client emits 'stop typing', we broadcast it to others
-  socket.on('stop typing', () => {
-    socket.broadcast.emit('stop typing', {
-      username: socket.username
-    });
-  });
+  // // when the client emits 'stop typing', we broadcast it to others
+  // socket.on('stop typing', () => {
+  //   socket.broadcast.emit('stop typing', {
+  //     username: socket.username
+  //   });
+  // });
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {

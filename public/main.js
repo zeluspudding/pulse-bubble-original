@@ -141,13 +141,6 @@ $(function() {
     addChatMessage(data);
   }
 
-  // Removes the visual chat typing message
-  const removeChatTyping = (data) => {
-    getTypingMessages(data).fadeOut(function () {
-      $(this).remove();
-    });
-  }
-
   // Adds a message element to the messages and scrolls to the bottom
   // el - The element to add as a message
   // options.fade - If the element should fade-in (default = true)
@@ -280,20 +273,22 @@ $(function() {
   socket.on('user joined', (data) => {
     log(data.username + ' joined');
     addParticipantsMessage(data);
+    console.log(data.usernames)
+    console.log(data.focused)
   });
 
   // Whenever the server emits 'user left', log it in the chat body
   socket.on('user left', (data) => {
     log(data.username + ' left');
     addParticipantsMessage(data);
-    removeChatTyping(data);
     console.log(data.usernames)
     console.log(data.focused)
   });
 
   // Whenever the server emits 'tab switch', log it in the console
   socket.on('tab switch', (data) => {
-    // console.log(data.username);
+    console.log(data.usernames)
+    console.log(data.focused)
   });
 
   // Whenever the server emits 'typing', show the typing message
@@ -301,10 +296,10 @@ $(function() {
     addChatTyping(data);
   });
 
-  // Whenever the server emits 'stop typing', kill the typing message
-  socket.on('stop typing', (data) => {
-    removeChatTyping(data);
-  });
+  // // Whenever the server emits 'stop typing', kill the typing message
+  // socket.on('stop typing', (data) => {
+  //   removeChatTyping(data);
+  // });
 
   socket.on('disconnect', () => {
     log('you have been disconnected');
