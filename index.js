@@ -14,20 +14,10 @@ server.listen(port, () => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Chatroom
-
 var numUsers = 0;
 
 io.on('connection', (socket) => {
   var addedUser = false;
-
-  // when the client emits 'new message', this listens and executes
-  socket.on('new message', (data) => {
-    // we tell the client to execute 'new message'
-    socket.broadcast.emit('new message', {
-      username: socket.username,
-      message: data
-    });
-  });
 
   // when the client emits 'add user', this listens and executes
   socket.on('add user', (username) => {
@@ -57,20 +47,6 @@ io.on('connection', (socket) => {
       focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
     });
   });
-
-  // when the client emits 'typing', we broadcast it to others
-  socket.on('typing', () => {
-    socket.broadcast.emit('typing', {
-      username: socket.username
-    });
-  });
-
-  // // when the client emits 'stop typing', we broadcast it to others
-  // socket.on('stop typing', () => {
-  //   socket.broadcast.emit('stop typing', {
-  //     username: socket.username
-  //   });
-  // });
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
