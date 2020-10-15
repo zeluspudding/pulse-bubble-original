@@ -1,6 +1,7 @@
 $(function() {
   // Prompt for setting a username
   var username;
+  var room;
   var connected = false;
 
   var socket = io();
@@ -26,10 +27,18 @@ $(function() {
   // Sets the client's username
   username = generateName()
 
+  // Sets the client's groom
+  rooms = ["thekravekitchen","Eat and Evolve"]
+
+  var room = rooms[Math.floor(Math.random() * rooms.length)];
+
   // If the username is valid
   if (username) {
     // Tell the server your username
-    socket.emit('add user', username);
+    socket.emit('add user', {
+      room: room,
+      username: username,
+    });
   }
 
   // Indicate whether user's tab is focused
@@ -79,7 +88,10 @@ $(function() {
   socket.on('reconnect', () => {
     console.log('you have been reconnected');
     if (username) {
-      socket.emit('add user', username);
+      socket.emit('add user', {
+        room: room,
+        username: username,
+      });
     }
   });
 
