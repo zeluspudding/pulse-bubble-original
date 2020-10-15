@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
       username: socket.username,
       numUsers: numUsers,
       usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
-      focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
+      focused: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].focused),
     });
   });
 
@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
       username: socket.username,
       numUsers: numUsers,
       usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
-      focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
+      focused: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].focused),
     });
   });
 
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
         username: socket.username,
         numUsers: numUsers,
         usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
-        focused: Object.keys(io.sockets.sockets).map(client_id => io.sockets.connected[client_id].focused),
+        focused: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].focused),
       });
     }
   });
