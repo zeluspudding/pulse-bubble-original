@@ -62,11 +62,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     if (addedUser) {
       --numUsers;
-
       var clients = socket.adapter.rooms[socket.room];
-      var numClients = (typeof clients !== 'undefined') ? clients['sockets'].length : 0;
       // echo globally that this client has left
-      if (numClients > 0) {
+      if (typeof clients !== 'undefined') {
+        socket.leave(socket.room);
         clients = Object.keys(clients['sockets'])
         socket.broadcast.to(socket.room).emit('user left', {
           username: socket.username,
