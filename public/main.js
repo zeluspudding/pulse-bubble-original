@@ -39,9 +39,10 @@ $(function() {
       room: room,
       username: username,
     });
+    console.log('Init to room:' + room)
   }
 
-  console.log('Init to room:' + room)
+
 
   // Indicate whether user's tab is focused
   $(window).on("blur focus", function(e) {
