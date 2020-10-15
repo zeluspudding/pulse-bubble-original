@@ -293,8 +293,7 @@ $(function() {
 
   // Whenever the server emits 'tab switch', log it in the console
   socket.on('tab switch', (data) => {
-    console.log(data.username);
-    console.log(data.focused);
+    // console.log(data.username);
   });
 
   // Whenever the server emits 'typing', show the typing message

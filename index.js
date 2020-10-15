@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     socket.focused = data;
     socket.broadcast.emit('tab switch', {
       username: socket.username,
-      focused: socket.focused
+      focused: socket.focused,
     });
   });
 
