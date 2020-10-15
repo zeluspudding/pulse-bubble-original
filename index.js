@@ -50,26 +50,32 @@ io.on('connection', (socket) => {
   // when the client emits 'tab switch', this listens and executes
   socket.on('tab switch', (data) => {
     socket.focused = data;
-    socket.broadcast.to(socket.room).emit('tab switch', {
-      username: socket.username,
-      numUsers: numUsers,
-      usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
-      focused: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].focused),
-    });
+    var clients = Object.keys(socket.adapter.rooms[socket.room]['sockets']);
+    var numClients = (typeof clients !== 'undefined') ? clients.length : 0;
+    // echo globally that this client has left
+    if (numClients > 0) {
+      socket.broadcast.to(socket.room).emit('tab switch', {
+        username: socket.username,
+        numUsers: numUsers,
+        usernames: clients.map(client_id => io.sockets.connected[client_id].username),
+        focused: clients.map(client_id => io.sockets.connected[client_id].focused),
+      });
+    }
   });
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
     if (addedUser) {
       --numUsers;
-
+      var clients = Object.keys(socket.adapter.rooms[socket.room]['sockets']);
+      var numClients = (typeof clients !== 'undefined') ? clients.length : 0;
       // echo globally that this client has left
-      if (socket.room) {
+      if (numClients > 0) {
         socket.broadcast.to(socket.room).emit('user left', {
           username: socket.username,
           numUsers: numUsers,
-          usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
-          focused: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].focused),
+          usernames: clients.map(client_id => io.sockets.connected[client_id].username),
+          focused: clients.map(client_id => io.sockets.connected[client_id].focused),
         });
       }
     }
