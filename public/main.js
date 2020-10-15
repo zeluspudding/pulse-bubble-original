@@ -41,6 +41,8 @@ $(function() {
     });
   }
 
+  console.log('Init to room:' + room)
+
   // Indicate whether user's tab is focused
   $(window).on("blur focus", function(e) {
       var prevType = $(this).data("prevType");
