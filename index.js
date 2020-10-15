@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
 
     // we store the username in the socket session for this client
     socket.username = username;
-    socket.focused = true;
+    socket.focused = false;
     ++numUsers;
     addedUser = true;
     // echo globally (all clients) that a person has connected
