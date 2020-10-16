@@ -53,12 +53,12 @@ io.on('connection', (socket) => {
     socket.broadcast.to(socket.room).emit('tab switch', {
       username: socket.username,
       numUsers: numUsers,
-      userdata: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(function(client_id) {
-        return {
+      userdata: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map( client_id => (
+        {
           username: io.sockets.connected[client_id].username,
           focused: io.sockets.connected[client_id].focused,
         }
-      }),
+      )),
     });
   });
 
