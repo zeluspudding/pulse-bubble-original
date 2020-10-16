@@ -14,7 +14,6 @@ server.listen(port, () => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Chatroom
-var numUsers = 0;
 
 function getRoomClients(room) {
   return new Promise((resolve, reject) => {
@@ -36,12 +35,10 @@ io.on('connection', (socket) => {
     socket.focused = true; // assumes that if a user opens this tab, it is to use it
     socket.join(data.room);
     socket.room = data.room;
-    ++numUsers;
     addedUser = true;
     // echo globally (all clients) that a person has connected
     socket.broadcast.to(socket.room).emit('user joined', {
       username: socket.username,
-      numUsers: numUsers,
       usernames: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].username),
       focused: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].focused),
     });
@@ -50,22 +47,17 @@ io.on('connection', (socket) => {
   // when the client emits 'tab switch', this listens and executes
   socket.on('tab switch', (data) => {
     socket.focused = data;
-    socket.broadcast.to(socket.room).emit('tab switch', {
-      username: socket.username,
-      numUsers: numUsers,
-      userdata: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map( client_id => (
-        {
-          username: io.sockets.connected[client_id].username,
-          focused: io.sockets.connected[client_id].focused,
-        }
-      )),
-    });
+    socket.broadcast.to(socket.room).emit('tab switch', Object.keys(socket.adapter.rooms[socket.room]['sockets']).map( client_id => (
+      {
+        username: io.sockets.connected[client_id].username,
+        focused: io.sockets.connected[client_id].focused,
+      }
+    )));
   });
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
     if (addedUser) {
-      --numUsers;
       var clients = socket.adapter.rooms[socket.room];
       // echo globally that this client has left
       if (typeof clients !== 'undefined') {
@@ -73,7 +65,6 @@ io.on('connection', (socket) => {
         clients = Object.keys(clients['sockets'])
         socket.broadcast.to(socket.room).emit('user left', {
           username: socket.username,
-          numUsers: numUsers,
           usernames: clients.map(client_id => io.sockets.connected[client_id].username),
           focused: clients.map(client_id => io.sockets.connected[client_id].focused),
         });
