@@ -63,11 +63,12 @@ io.on('connection', (socket) => {
       if (typeof clients !== 'undefined') {
         socket.leave(socket.room);
         clients = Object.keys(clients['sockets'])
-        socket.broadcast.to(socket.room).emit('user left', {
-          username: socket.username,
-          usernames: clients.map(client_id => io.sockets.connected[client_id].username),
-          focused: clients.map(client_id => io.sockets.connected[client_id].focused),
-        });
+        socket.broadcast.to(socket.room).emit('user left', clients.map( client_id => (
+          {
+            username: io.sockets.connected[client_id].username,
+            focused: io.sockets.connected[client_id].focused,
+          }
+        )));
       }
     }
   });

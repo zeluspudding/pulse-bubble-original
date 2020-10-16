@@ -77,8 +77,7 @@ script.onload = function() {
 
     // Whenever the server emits 'user left', log it in the chat body
     socket.on('user left', (data) => {
-      console.log(data.usernames)
-      console.log(data.focused)
+      console.log(data)
     });
 
     // Whenever the server emits 'tab switch', log it in the console
