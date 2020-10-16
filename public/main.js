@@ -1,10 +1,10 @@
 let script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = '"https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"';
+script.src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js";
 document.getElementsByTagName('head')[0].appendChild(script);
 
 script.onload = function() {
-  $(function() {  
+  $(function() {
     // Prompt for setting a username
     var username;
     var room;
