@@ -83,8 +83,7 @@ script.onload = function() {
 
     // Whenever the server emits 'tab switch', log it in the console
     socket.on('tab switch', (data) => {
-      console.log(data.userdata.usernames)
-      console.log(data.userdata.focused)
+      console.log(data.userdata)
     });
 
     socket.on('disconnect', () => {
