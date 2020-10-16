@@ -58,10 +58,7 @@ io.on('connection', (socket) => {
           username: io.sockets.connected[client_id].username,
           focused: io.sockets.connected[client_id].focused,
         }
-      })
-      //
-      //   client_id => io.sockets.connected[client_id].username),
-      // focused: Object.keys(socket.adapter.rooms[socket.room]['sockets']).map(client_id => io.sockets.connected[client_id].focused),
+      }),
     });
   });
 
