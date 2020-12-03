@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
     socket.room = data.room;
     addedUser = true;
     // echo globally (all clients) that a person has connected
-    socket.broadcast.to(socket.room).emit('user joined', Object.keys(socket.adapter.rooms[socket.room]['sockets']).map( client_id => (
+    io.in(socket.room).emit('user joined', Object.keys(socket.adapter.rooms[socket.room]['sockets']).map( client_id => (
       {
         username: io.sockets.connected[client_id].username,
         focused: io.sockets.connected[client_id].focused,
